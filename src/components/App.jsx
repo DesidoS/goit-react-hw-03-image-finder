@@ -1,16 +1,28 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+import { Component } from 'react';
+
+import Searchbar from './Searchbar';
+import ImageGallery from './ImageGallery';
+import { Container } from './App.styled';
+
+class App extends Component {
+  state = {
+    findImg: null,
+    page: 1,
+    showModal: false,
+  };
+
+  updateState = findImg => {
+    this.setState({ findImg });
+  };
+
+  render() {
+    return (
+      <Container>
+        <Searchbar updateState={this.updateState} />
+        <ImageGallery findImg={this.state.findImg} />
+      </Container>
+    );
+  }
+}
+
+export default App;
