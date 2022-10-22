@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { GalleryItemImg } from '../Gallery.styled';
 import Modal from '../../Modal';
 
@@ -22,3 +23,11 @@ const ImageGalleryItem = ({
 };
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+  showModal: PropTypes.bool.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+  webformatURL: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+};
