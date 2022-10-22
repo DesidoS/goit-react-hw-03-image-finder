@@ -47,7 +47,7 @@ class ImageGallery extends Component {
               status: 'resolved',
             });
           }
-          if (hits.length < 11) {
+          if (hits.length <= 12) {
             this.setState({
               page: 0,
             });
