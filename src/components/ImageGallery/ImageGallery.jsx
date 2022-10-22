@@ -62,13 +62,11 @@ class ImageGallery extends Component {
 
   componentDidMount() {
     document.addEventListener('click', e => {
-      // console.log('ImageGallery ~ componentDidMount ~ e', e.target);
-
       if (e.target.nodeName !== 'IMG') {
         this.setState({ showModal: false });
         return;
       } else {
-        this.onClickPic(e.target.src);
+        this.onClickPic(e.target.srcset);
       }
     });
   }
@@ -76,9 +74,9 @@ class ImageGallery extends Component {
   onLoadMore = () => {
     this.setState({ page: this.state.page + 1 });
   };
-  onClickPic = src => {
+  onClickPic = srcSet => {
     this.setState({
-      bigPic: src,
+      bigPic: srcSet,
     });
   };
 

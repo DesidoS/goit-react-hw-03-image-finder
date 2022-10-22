@@ -11,7 +11,11 @@ const ImageGalleryItem = ({
 }) => {
   return (
     <>
-      <GalleryItemImg onClick={toggleModal} src={webformatURL} />
+      <GalleryItemImg
+        onClick={toggleModal}
+        src={webformatURL}
+        srcSet={largeImageURL}
+      />
       {showModal && <Modal onClose={toggleModal} bigPic={bigPic} tags={tags} />}
     </>
   );
