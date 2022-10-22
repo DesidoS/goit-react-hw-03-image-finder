@@ -7,7 +7,6 @@ import { Container } from './App.styled';
 class App extends Component {
   state = {
     findImg: null,
-    page: 1,
     showModal: false,
   };
 

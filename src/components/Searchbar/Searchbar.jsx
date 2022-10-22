@@ -22,7 +22,6 @@ class Searchbar extends Component {
       alert('Please, enter field');
       return;
     }
-    // this.props.updatePage(1);
     this.props.updateState(this.state.findImg);
     this.resetFieldts();
   };

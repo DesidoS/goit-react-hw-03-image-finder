@@ -65,7 +65,11 @@ class ImageGallery extends Component {
       if (e.target.nodeName !== 'IMG') {
         this.setState({ showModal: false });
         return;
-      } else {
+      }
+      if (!e.target.srcset) {
+        return;
+      }
+      if (e.target.srcset) {
         this.onClickPic(e.target.srcset);
       }
     });
@@ -125,13 +129,3 @@ class ImageGallery extends Component {
 }
 
 export default ImageGallery;
-
-// componentDidMount() {
-//   this.setState({ status: 'pending' });
-//   fetchPixabay(this.state.findImg).then(res => {
-//     this.setState({
-//       content: res.data.hits,
-//     });
-//     this.setState({ status: 'resolved' });
-//   });
-// }
