@@ -40,14 +40,19 @@ class ImageGallery extends Component {
       });
       this.setState({ status: 'pending' });
       fetchPixabay(this.props.findImg, this.props.page).then(
-        ({ data: { hits } }) => {
+        ({ data: { hits, totalHits } }) => {
+          if (totalHits === 12) {
+            this.setState({
+              page: 0,
+            });
+          }
           if (hits.length !== 0) {
             this.setState({
               content: [...this.state.content, ...hits],
               status: 'resolved',
             });
           }
-          if (hits.length <= 12) {
+          if (hits.length < 12) {
             this.setState({
               page: 0,
             });
