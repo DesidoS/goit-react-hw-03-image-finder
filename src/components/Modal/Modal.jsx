@@ -15,12 +15,12 @@ export default class Modal extends Component {
 
   onKeyDown = e => {
     if (e.code === 'Escape') {
-      return this.props.onClose();
+      return this.props.toggleModal();
     }
   };
   onClickClose = e => {
     if (e.currentTarget === e.target) {
-      this.props.onClose();
+      this.props.toggleModal();
     }
   };
 
