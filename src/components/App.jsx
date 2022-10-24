@@ -1,4 +1,5 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
+import { Container } from './App.styled';
 import SearchBar from './Searchbar';
 import Loader from './Loader';
 import fetchPixabay from '../api/index';
@@ -14,6 +15,7 @@ class App extends Component {
     status: 'idle',
     showModal: false,
   };
+
   componentDidMount() {
     document.addEventListener('click', e => {
       if (!e.target.srcset) {
@@ -80,7 +82,9 @@ class App extends Component {
       return (
         <>
           <SearchBar updateState={this.updateState} />
-          <h1>Insert your request.</h1>
+          <Container>
+            <h1>Insert your request.</h1>
+          </Container>
         </>
       );
     }
@@ -88,7 +92,9 @@ class App extends Component {
       return (
         <>
           <SearchBar updateState={this.updateState} />
-          <Loader />;
+          <Container>
+            <Loader />;
+          </Container>
         </>
       );
     }
@@ -108,7 +114,9 @@ class App extends Component {
       return (
         <>
           <SearchBar updateState={this.updateState} />
-          <h1>No images for this request.</h1>
+          <Container>
+            <h1>No images for this request.</h1>
+          </Container>
         </>
       );
     }

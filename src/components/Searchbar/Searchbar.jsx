@@ -23,14 +23,14 @@ class Searchbar extends Component {
       return;
     }
     this.props.updateState(this.state.findImg);
-    // this.resetFieldts();
+    this.resetFieldts();
   };
 
-  // resetFieldts = () => {
-  //   this.setState(() => ({
-  //     findImg: '',
-  //   }));
-  // };
+  resetFieldts = () => {
+    this.setState(() => ({
+      findImg: '',
+    }));
+  };
   render() {
     return (
       <SearchBar>
