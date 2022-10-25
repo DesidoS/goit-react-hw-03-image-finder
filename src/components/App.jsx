@@ -105,14 +105,15 @@ class App extends Component {
             <h1>No images for this request.</h1>
           </Container>
         )}
+
+        <ImageGallery content={content} />
+        {this.state.content.length > 0 &&
+          !this.state.loadedAllPages &&
+          !this.state.isLoading && <Button onLoadMore={this.onLoadMore} />}
         {this.state.isLoading && (
           <Container>
             <Loader />
           </Container>
-        )}
-        <ImageGallery content={content} />
-        {this.state.content.length > 0 && !this.state.loadedAllPages && (
-          <Button onLoadMore={this.onLoadMore} />
         )}
         {showModal && (
           <Modal toggleModal={this.toggleModal}>
@@ -125,48 +126,3 @@ class App extends Component {
 }
 
 export default App;
-
-// if (status === 'idle') {
-//   return (
-//     <>
-//       <SearchBar updateState={this.updateState} />
-// <Container>
-//   <h1>Insert your request.</h1>
-// </Container>
-//     </>
-//   );
-// }
-// if (status === 'pending') {
-//   return (
-//     <>
-//       <SearchBar updateState={this.updateState} />
-//       <Container>
-//         <Loader />;
-//       </Container>
-//     </>
-//   );
-// }
-// if (status === 'resolved') {
-//   return (
-//     <>
-//       <SearchBar updateState={this.updateState} />
-//       <ImageGallery content={content} />
-//       {this.state.page > 1 && <Button onLoadMore={this.onLoadMore} />}
-//       {showModal && (
-//         <Modal toggleModal={this.toggleModal}>
-//           {<img src={bigPic} alt={tags}></img>}
-//         </Modal>
-//       )}
-//     </>
-//   );
-// }
-// if (status === 'empty') {
-//   return (
-//     <>
-//       <SearchBar updateState={this.updateState} />
-// <Container>
-//   <h1>No images for this request.</h1>
-// </Container>
-//     </>
-//   );
-// }

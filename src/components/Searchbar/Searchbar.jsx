@@ -16,24 +16,34 @@ class Searchbar extends Component {
   };
 
   state = {
-    findImg: '',
+    find: '',
+    prevFind: '',
   };
   onInputChange = e => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
   onSubmit = e => {
     e.preventDefault();
-    if (this.state.findImg.trim('') === '') {
+
+    this.setState(() => ({
+      prevFind: this.state.find,
+    }));
+
+    if (this.state.find.trim('') === '') {
       alert('Please, enter field');
       return;
     }
-    this.props.updateState(this.state.findImg);
+    if (this.state.find.trim('') === this.state.prevFind) {
+      alert('Please, new request');
+      return;
+    }
+    this.props.updateState(this.state.find);
     this.resetFieldts();
   };
 
   resetFieldts = () => {
     this.setState(() => ({
-      findImg: '',
+      find: '',
     }));
   };
   render() {
@@ -46,12 +56,12 @@ class Searchbar extends Component {
             </SearchFormButtonLabel>
           </SearchFormButton>
           <SearchFormInput
-            name="findImg"
+            name="find"
             type="text"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={this.state.findImg}
+            value={this.state.find}
             onChange={this.onInputChange}
           />
         </SearchForm>
