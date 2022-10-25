@@ -39,11 +39,15 @@ class App extends Component {
   }
 
   updateState = findImg => {
-    this.setState({ findImg, page: 1, content: [] });
+    this.setState({
+      findImg,
+      page: 1,
+      content: [],
+      status: 'pending',
+    });
   };
 
   loadingContent = async (q, page) => {
-    this.setState({ status: 'pending' });
     const response = await fetchPixabay(q, page);
     if (response.data.totalHits <= 12) {
       this.setState({
@@ -67,6 +71,7 @@ class App extends Component {
 
   onLoadMore = () => {
     this.loadingContent(this.state.findImg, this.state.page);
+    window.scrollTo({ top: 0 });
   };
 
   toggleModal = e => {
@@ -76,7 +81,7 @@ class App extends Component {
   };
 
   render() {
-    const { status, content, showModal, bigPic, tags } = this.state;
+    const { status, content, showModal, bigPic, tags, page } = this.state;
 
     if (status === 'idle') {
       return (
@@ -103,7 +108,10 @@ class App extends Component {
         <>
           <SearchBar updateState={this.updateState} />
           <ImageGallery content={content} />
-          {this.state.page > 1 && <Button onLoadMore={this.onLoadMore} />}
+          {page > 1 && status === 'panding' && <Loader />}
+          {page > 1 && status === 'resolved' && (
+            <Button onLoadMore={this.onLoadMore} />
+          )}
           {showModal && (
             <Modal toggleModal={this.toggleModal}>
               {<img src={bigPic} alt={tags}></img>}
