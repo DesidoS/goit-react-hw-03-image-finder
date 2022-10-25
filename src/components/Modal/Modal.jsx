@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 import { Overlay, ModalDiv } from './Modal.styled';
+import PropTypes from 'prop-types';
 
 const modalRoot = document.querySelector('#modalRoot');
 
 export default class Modal extends Component {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+    toggleModal: PropTypes.func.isRequired,
+  };
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown);
   }
@@ -25,11 +30,10 @@ export default class Modal extends Component {
   };
 
   render() {
+    const { children } = this.props;
     return createPortal(
       <Overlay onClick={this.onClickClose}>
-        <ModalDiv>
-          <img src={this.props.bigPic} alt={this.props.tags}></img>
-        </ModalDiv>
+        <ModalDiv>{children}</ModalDiv>
       </Overlay>,
       modalRoot
     );

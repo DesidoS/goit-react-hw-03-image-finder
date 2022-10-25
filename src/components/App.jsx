@@ -105,7 +105,9 @@ class App extends Component {
           <ImageGallery content={content} />
           {this.state.page > 1 && <Button onLoadMore={this.onLoadMore} />}
           {showModal && (
-            <Modal toggleModal={this.toggleModal} bigPic={bigPic} tags={tags} />
+            <Modal toggleModal={this.toggleModal}>
+              {<img src={bigPic} alt={tags}></img>}
+            </Modal>
           )}
         </>
       );

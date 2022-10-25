@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   SearchBar,
@@ -10,6 +11,10 @@ import {
 import { FcSearch } from 'react-icons/fc';
 
 class Searchbar extends Component {
+  static propTypes = {
+    updateState: PropTypes.func.isRequired,
+  };
+
   state = {
     findImg: '',
   };
