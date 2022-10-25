@@ -12,8 +12,10 @@ class App extends Component {
     page: 1,
     findImg: '',
     content: [],
-    status: 'idle',
+    empty: false,
+    isLoading: false,
     showModal: false,
+    loadedAllPages: false,
   };
 
   componentDidMount() {
@@ -39,39 +41,46 @@ class App extends Component {
   }
 
   updateState = findImg => {
-    this.setState({
-      findImg,
-      page: 1,
-      content: [],
-      status: 'pending',
-    });
+    this.setState({ findImg, page: 1, content: [], empty: false });
   };
 
   loadingContent = async (q, page) => {
+    this.setState({ isLoading: true });
     const response = await fetchPixabay(q, page);
-    if (response.data.totalHits <= 12) {
+    const { totalHits, hits } = response.data;
+    const { content } = this.state;
+
+    if (totalHits === 0) {
       this.setState({
-        content: [...response.data.hits],
-        status: 'resolved',
+        empty: true,
+        isLoading: false,
       });
+      return;
     }
-    if (response.data.totalHits === 0) {
+    if (totalHits <= 12) {
       this.setState({
-        status: 'empty',
+        loadedAllPages: true,
+        isLoading: false,
+        content: [...content, ...hits],
       });
+      return;
     }
-    if (response.data.totalHits > 12) {
+    this.setState({
+      isLoading: false,
+      content: [...content, ...hits],
+      loadedAllPages: false,
+      page: page + 1,
+    });
+    if (totalHits < content.length + 12) {
       this.setState({
-        content: [...this.state.content, ...response.data.hits],
-        status: 'resolved',
-        page: this.state.page + 1,
+        loadedAllPages: true,
       });
+      return;
     }
   };
 
   onLoadMore = () => {
     this.loadingContent(this.state.findImg, this.state.page);
-    window.scrollTo({ top: 0 });
   };
 
   toggleModal = e => {
@@ -81,56 +90,83 @@ class App extends Component {
   };
 
   render() {
-    const { status, content, showModal, bigPic, tags, page } = this.state;
+    const { content, showModal, bigPic, tags } = this.state;
 
-    if (status === 'idle') {
-      return (
-        <>
-          <SearchBar updateState={this.updateState} />
+    return (
+      <>
+        <SearchBar updateState={this.updateState} />
+        {this.state.findImg === '' && (
           <Container>
             <h1>Insert your request.</h1>
           </Container>
-        </>
-      );
-    }
-    if (status === 'pending') {
-      return (
-        <>
-          <SearchBar updateState={this.updateState} />
-          <Container>
-            <Loader />;
-          </Container>
-        </>
-      );
-    }
-    if (status === 'resolved') {
-      return (
-        <>
-          <SearchBar updateState={this.updateState} />
-          <ImageGallery content={content} />
-          {page > 1 && status === 'panding' && <Loader />}
-          {page > 1 && status === 'resolved' && (
-            <Button onLoadMore={this.onLoadMore} />
-          )}
-          {showModal && (
-            <Modal toggleModal={this.toggleModal}>
-              {<img src={bigPic} alt={tags}></img>}
-            </Modal>
-          )}
-        </>
-      );
-    }
-    if (status === 'empty') {
-      return (
-        <>
-          <SearchBar updateState={this.updateState} />
+        )}
+        {this.state.empty && (
           <Container>
             <h1>No images for this request.</h1>
           </Container>
-        </>
-      );
-    }
+        )}
+        {this.state.isLoading && (
+          <Container>
+            <Loader />
+          </Container>
+        )}
+        <ImageGallery content={content} />
+        {this.state.content.length > 0 && !this.state.loadedAllPages && (
+          <Button onLoadMore={this.onLoadMore} />
+        )}
+        {showModal && (
+          <Modal toggleModal={this.toggleModal}>
+            {<img src={bigPic} alt={tags}></img>}
+          </Modal>
+        )}
+      </>
+    );
   }
 }
 
 export default App;
+
+// if (status === 'idle') {
+//   return (
+//     <>
+//       <SearchBar updateState={this.updateState} />
+// <Container>
+//   <h1>Insert your request.</h1>
+// </Container>
+//     </>
+//   );
+// }
+// if (status === 'pending') {
+//   return (
+//     <>
+//       <SearchBar updateState={this.updateState} />
+//       <Container>
+//         <Loader />;
+//       </Container>
+//     </>
+//   );
+// }
+// if (status === 'resolved') {
+//   return (
+//     <>
+//       <SearchBar updateState={this.updateState} />
+//       <ImageGallery content={content} />
+//       {this.state.page > 1 && <Button onLoadMore={this.onLoadMore} />}
+//       {showModal && (
+//         <Modal toggleModal={this.toggleModal}>
+//           {<img src={bigPic} alt={tags}></img>}
+//         </Modal>
+//       )}
+//     </>
+//   );
+// }
+// if (status === 'empty') {
+//   return (
+//     <>
+//       <SearchBar updateState={this.updateState} />
+// <Container>
+//   <h1>No images for this request.</h1>
+// </Container>
+//     </>
+//   );
+// }
